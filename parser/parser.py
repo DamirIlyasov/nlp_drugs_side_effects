@@ -1,3 +1,4 @@
+import os
 import re
 
 
@@ -22,7 +23,8 @@ def parseJSONData(input, output):
                 outfile.write(tweetWithoutLink + '\n')
 
 
-# parseTweetsWithIds("loaded_tweets.txt", "loaded_tweets_parsed.txt")
+parseTweetsWithIds(os.path.join(os.path.dirname(__file__), '..', 'sources', 'loaded_tweets.txt'),
+                   os.path.join(os.path.dirname(__file__), '..', 'sources', 'loaded_tweets_parsed.txt'))
 
 
-parseJSONData("sources/tweets17.log", "results/json_parsed.txt")
+# parseJSONData("sources/tweets17.log", "results/json_parsed.txt")
