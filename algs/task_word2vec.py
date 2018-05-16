@@ -49,7 +49,7 @@ if __name__ == '__main__':
 print('Training Linear SVC...')
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
-f2 = open(os.path.join(os.path.dirname(__file__), '..', 'sources', 'svm_with_word2vec.txt'), 'w+')
+f2 = open(os.path.join(os.path.dirname(__file__), '..', 'results', 'svm_with_word2vec.txt'), 'w+')
 print(classification_report(y_test, y_pred), file=f2)
 f2.close()
 print('Done')

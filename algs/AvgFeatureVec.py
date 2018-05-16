@@ -28,7 +28,7 @@ class AvgFeatureVec(BaseEstimator, TransformerMixin):
         return features
 
     def makeFeatureVec(self, words, model, num_features):
-        featureVec = np.zeros((num_features,), dtype="float32")
+        featureVec = np.zeros((num_features,), dtype="float64")
         nwords = 0.
         index2word_set = set(model.wv.vocab)
         for word in words:

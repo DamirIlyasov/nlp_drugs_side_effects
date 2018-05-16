@@ -12,18 +12,18 @@ from algs.AvgFeatureVec import AvgFeatureVec
 from algs.Util import text_process
 
 # data = Word2Vec.load('C:\Users\Dmitry\PycharmProjects\\nlp_drugs_side_effects\classificator\model\model.txt')
+print("Loading w2v")
 model = Word2Vec.load(os.path.join(os.path.dirname(__file__), '..', 'sources', 'model_w2v.txt'))
 w2v = dict(zip(model.wv.index2word, model.wv.syn0))
 x_train = []
 y_train = []
 
+print("Parsing data")
 for line in open(os.path.join(os.path.dirname(__file__), '..', 'sources', 'loaded_tweets_parsed.txt'),
                  encoding='utf-8'):
     fields = line.rstrip().split('\t')
     x_train.append(fields[1])
     y_train.append(fields[0])
-
-vectorizer = AvgFeatureVec(w2v)
 
 X_train_new, X_test, y_train_new, y_test = train_test_split(x_train, y_train, test_size=0.2, random_state=101)
 
@@ -34,6 +34,7 @@ svm_w2v_tfidf = Pipeline([('feats', FeatureUnion([
                           ("linear svc", LinearSVC())
                           ])
 
+print("Training SVM..")
 svm_w2v_tfidf.fit(X_train_new, y_train_new)
 # save trained model
 filename = 'trained_model.sav'
