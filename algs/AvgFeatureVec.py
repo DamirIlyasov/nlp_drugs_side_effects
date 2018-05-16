@@ -35,6 +35,6 @@ class AvgFeatureVec(BaseEstimator, TransformerMixin):
             if word in index2word_set:
                 nwords += 1.
                 featureVec = np.add(featureVec, model[word])
-
-        featureVec = np.divide(featureVec, nwords)
+        if nwords > 0:
+            featureVec = np.divide(featureVec, nwords)
         return featureVec
