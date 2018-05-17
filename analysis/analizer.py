@@ -258,10 +258,10 @@ def __addRow(array, amount=1):
 
 # Тестовые запуски
 
-
-getEntranceMatrixCountVectorizer("test/loaded_tweets_parsed.txt", "dictionaries/ADR_dictionary_en.txt",
-                                 output="test/entrance_matrix.txt",
-                                 language='english')
+#
+# getEntranceMatrixCountVectorizer("test/loaded_tweets_parsed.txt", "dictionaries/ADR_dictionary_en.txt",
+#                                  output="test/entrance_matrix.txt",
+#                                  language='english')
 # parseDocument("test/loaded_tweets_parsed.txt", output="test/entrance_matrix.txt")
 # getEntranceMatrix("test/loaded_tweets_parsed.txt", "dictionaries/ADR_dictionary_en.txt", "english", "test/entrance_matrix.txt")
 # print(getEntranceMatrix("1", "2"))

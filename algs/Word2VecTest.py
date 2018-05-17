@@ -3,17 +3,19 @@ import pickle
 
 from gensim.models import Word2Vec
 from sklearn.cross_validation import train_test_split
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.metrics import classification_report
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.svm import LinearSVC
 
 from algs.AvgFeatureVec import AvgFeatureVec
 from algs.Util import text_process
+from analysis import analizer
 
-# data = Word2Vec.load('C:\Users\Dmitry\PycharmProjects\\nlp_drugs_side_effects\classificator\model\model.txt')
+# data = Word2Vec.load('C:\Users\Dmitry\PycharmProjects\\nlp_drugs_side_effects\classificator\model\model_w2v.txt')
 print("Loading w2v")
-model = Word2Vec.load(os.path.join(os.path.dirname(__file__), '..', 'sources', 'model_w2v.txt'))
+# model = Word2Vec.load(os.path.join(os.path.dirname(__file__), '..', 'sources', 'model', 'model_w2v.txt'))
+model = Word2Vec(analizer.parseDocument(os.path.join(os.path.dirname(__file__), '..', 'sources', 'json_parsed.txt')), size=100, workers=6)
 w2v = dict(zip(model.wv.index2word, model.wv.syn0))
 x_train = []
 y_train = []
@@ -28,6 +30,7 @@ for line in open(os.path.join(os.path.dirname(__file__), '..', 'sources', 'loade
 X_train_new, X_test, y_train_new, y_test = train_test_split(x_train, y_train, test_size=0.2, random_state=101)
 
 svm_w2v_tfidf = Pipeline([('feats', FeatureUnion([
+    ('vocab', CountVectorizer(vocabulary=set(analizer.__parseDictionary(dictionary = os.path.join(os.path.dirname(__file__),'..','data','SideEffectsEng.txt'),allowCompositeValues = False)))),
     ('tf_idf_vect', TfidfVectorizer(analyzer=text_process)),
     ('words_avg_vec', AvgFeatureVec(model, 100))
 ])),
@@ -37,6 +40,8 @@ svm_w2v_tfidf = Pipeline([('feats', FeatureUnion([
 # print("Training SVM..")
 # svm_w2v_tfidf.fit(X_train_new, y_train_new)
 # save trained model
+# filename = 'trained_model.sav'
+# pickle.dump(model, open(filename, 'wb'))
 filename = 'trained_model.sav'
 
 # print('Saving trained model..')
