@@ -7,6 +7,9 @@ import scipy.sparse as sps
 import time
 from sklearn.feature_extraction.text import CountVectorizer
 
+punctuation = {'.', ',', '"', "'", '?', '!', ':', ';', '(', ')', '[', ']', '{', '}', '%', '$', '#', '№', '*', '^', '@',
+               '+', '-', '\'s', '\'m', '\'', '...', '\"'}
+
 """""
     Функция для анализа корпуса
     
@@ -181,7 +184,7 @@ def getStatisticFromEntranceMatrix(input):
 """
 
 
-def parseDocument(input, language='english', output=''):
+def parseCorpus(input, language='english', output=''):
     documents = []
     with open(input, 'r', encoding='utf-8') as infile:
         for line in infile:
@@ -191,7 +194,89 @@ def parseDocument(input, language='english', output=''):
     return documents
 
 
+"""""
+    Функция для построения словаря с учетом n-грамм
+    
+    Parameters
+    ----------
+    documents : list = лист твитов
+    language : str = язык, используемый в корпусе (2 возможных параметра : 'russian', 'english')
+    type : str = тип комманды
+    ngramm : int = размерность n-граммы
+
+    Returns
+    -------
+    vocabulary : list = лист n-грамм
+
+"""
+
+
+def getNGrammVocabulary(documents, type, language, ngramm):
+    preparedDocs = prepareDocumentsForNGramm(documents, type, language)
+    vectorizer = CountVectorizer(ngram_range=(1, ngramm))
+    result = vectorizer.fit(preparedDocs).vocabulary_
+    return list(result.keys())
+
+
+# функции  для обслуживания параметра функции --word-type
+"""""
+    surface_all
+    В качестве слов берутся все токены как есть
+"""
+
+
+def surfaceAll(document):
+    return [word.lower() for word in nltk.word_tokenize(document)]
+
+
+"""""
+    surface_no_pm
+    Все токены, кроме знаков пунктуаций
+"""
+
+
+def surfaceNoPm(document):
+    return [word.lower() for word in nltk.word_tokenize(document)
+            if not punctuation.__contains__(word)]
+    pass
+
+
+"""""
+    stem
+    каждый токен подвергается стемму
+"""
+
+
+def stem(document, language):
+    return __getPreProcessedWordsFromDocument(document, language)
+
+
 # Служебные функции
+
+
+def prepareDocumentsForNGramm(documents, type, language):
+    result = []
+    for doc in documents:
+        currentDoc = ''
+        if (type.__eq__('surface_all')):
+            currentDoc = listToString(surfaceAll(doc))
+
+        elif (type.__eq__('surface_no_pm')):
+            currentDoc = listToString(surfaceNoPm(doc))
+
+        elif (type.__eq__('stem')):
+            currentDoc = listToString(stem(doc, language))
+        else:
+            raise ValueError('wrong type!')
+        result.append(currentDoc)
+    return result
+
+
+def listToString(list):
+    string = ''
+    for word in list:
+        string = string + " " + word
+    return string
 
 
 def __divideMarkedCorpus(input, output1, output2):
@@ -209,9 +294,9 @@ def __divideMarkedCorpus(input, output1, output2):
 
 def __writeArrayToFile(output, arrayData):
     with open(output, 'w', encoding='utf-8') as outfile:
-            for value in arrayData:
-                outfile.write(str(value))
-            outfile.write("\n")
+        for value in arrayData:
+            outfile.write(str(value))
+        outfile.write("\n")
 
 
 def __getStemmer(language):
@@ -229,8 +314,7 @@ def __getStopWords(language):
     if not language in options:
         raise ValueError('unknown language')
     stop = options.get(language)
-    stop.update(['.', ',', '"', "'", '?', '!', ':', ';', '(', ')', '[', ']', '{', '}'
-                    , '%', '$', '#', '№', '*', '^', '@', '+', '-', '\'s', '\'m', '\'', '...', '\"'])
+    stop.update(punctuation)
     return stop
 
 
@@ -288,16 +372,27 @@ def __addRow(array, amount=1):
     return res.toarray()
 
 
+def splitCorpus(input):
+    documents = []
+    with open(input, 'r', encoding='utf-8') as infile:
+        for line in infile:
+            documents.append(line)
+    return documents
+
+
 # Тестовые запуски
 
 
-print("процент покрытия из класаа 0 : ")
-getStatisticFromEntranceMatrix("test/entrance_mat_1.txt")
-
-print("процент покрытия из класаа 1 : ")
-getStatisticFromEntranceMatrix("test/entrance_mat_2.txt")
+# print("процент покрытия из класаа 0 : ")
+# getStatisticFromEntranceMatrix("test/entrance_mat_1.txt")
+#
+# print("процент покрытия из класаа 1 : ")
+# getStatisticFromEntranceMatrix("test/entrance_mat_2.txt")
 
 # parseDocument("test/loaded_tweets_parsed.txt", output="test/entrance_matrix.txt")
 # getEntranceMatrix("test/loaded_tweets_parsed.txt", "dictionaries/ADR_dictionary_en.txt", "english", "test/entrance_matrix.txt")
 # print(getEntranceMatrix("1", "2"))
 # print(analyze("english", "test/loaded_tweets_parsed.txt"))
+
+
+# getNGrammVocabulary(splitCorpus('test/loaded_tweets_parsed.txt'), 'stem', 'english', 2)
