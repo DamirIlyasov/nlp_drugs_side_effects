@@ -1,0 +1,1 @@
+C:\Users\Liia\AppData\Local\Programs\Python\Python36\python.exe C:/Users/Liia/PycharmProjects/nlp_drugs_side_effects/F1.py --src-train-texts loaded_tweets_parsed.txt --features true -o trained_model.sav -language english

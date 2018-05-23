@@ -1,7 +1,6 @@
+"""Takes unclassified corpus and classifies it"""
 import os
 import pickle
-
-"""Takes unclassified corpus and classifies it"""
 
 
 def predict(trained_model_path, test_text_path, result_path):
@@ -15,10 +14,10 @@ def predict(trained_model_path, test_text_path, result_path):
         x_test.append(line)
 
     print("Predicting")
-    x_pred = predicting_model.predict(x_test)
+    y_pred = predicting_model.predict(x_test)
 
     print("Printing results")
     f1 = open(os.path.join(os.path.dirname(__file__), '..', 'results', result_path), 'w+',
               encoding='utf-8')
-    print("\n".join('%s' % x for x in list(zip(x_pred, x_test))), file=f1)
+    print("\n".join('%s' % x for x in list(zip(y_pred, x_test))), file=f1)
 
