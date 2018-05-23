@@ -223,7 +223,6 @@ def stemVocab(input, language):
     result = []
     for line in vocab:
         result.append(listToString(__getPreProcessedWordsFromDocument(line, language)))
-    print(result)
     return result
 
 
@@ -264,21 +263,19 @@ def stem(document, language):
 
 
 def prepareDocumentsForNGramm(documents, type, language):
-    result = []
-    for doc in documents:
-        currentDoc = ''
-        if (type.__eq__('surface_all')):
-            currentDoc = listToString(surfaceAll(doc))
+    currentDoc = ''
+    if (type.__eq__('surface_all')):
+        currentDoc = listToString(surfaceAll(documents))
 
-        elif (type.__eq__('surface_no_pm')):
-            currentDoc = listToString(surfaceNoPm(doc))
+    elif (type.__eq__('surface_no_pm')):
+        currentDoc = listToString(surfaceNoPm(documents))
 
-        elif (type.__eq__('stem')):
-            currentDoc = listToString(stem(doc, language))
-        else:
-            raise ValueError('wrong type!')
-        result.append(currentDoc)
-    return result
+    elif (type.__eq__('stem')):
+        currentDoc = listToString(stem(documents, language))
+    else:
+        raise ValueError('wrong type!')
+
+    return currentDoc
 
 
 def listToString(list):
@@ -387,7 +384,6 @@ def splitCorpus(input):
         for line in infile:
             documents.append(line)
     return documents
-
 
 # Тестовые запуски
 
