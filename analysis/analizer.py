@@ -212,10 +212,7 @@ def parseCorpus(input, language='english', output=''):
 
 
 def getNGrammVocabulary(documents, type, language, ngramm):
-    preparedDocs = prepareDocumentsForNGramm(documents, type, language)
-    vectorizer = CountVectorizer(ngram_range=(1, ngramm))
-    result = vectorizer.fit(preparedDocs).vocabulary_
-    return list(result.keys())
+    return prepareDocumentsForNGramm(documents, type, language)
 
 
 def stemVocab(input, language):

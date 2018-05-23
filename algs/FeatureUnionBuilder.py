@@ -28,10 +28,10 @@ class FeatureUnionBuilder:
         self.minDf = unknown_word_freq
 
     def getTfidfVectorizer(self):
-        return TfidfVectorizer(analyzer=self.text_analyzer, min_df=self.minDf)
+        return TfidfVectorizer(preprocessor=self.text_analyzer, min_df=self.minDf, ngram_range=(1, self.ngramm))
 
     def getVocabModel(self, vocab_path):
-        return CountVectorizer(vocabulary=stemVocab(vocab_path, self.language), min_df=self.minDf)
+        return CountVectorizer(vocabulary=set(stemVocab(vocab_path, self.language)), min_df=self.minDf)
 
     def getWord2VecModel(self, model, size):
         return AvgFeatureVec(model, size)
