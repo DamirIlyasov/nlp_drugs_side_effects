@@ -3,7 +3,8 @@ import sys
 from algs.MetricsCounter import count_metrics
 
 if __name__ == '__main__':
-    global pathToSerializedModel, testTextPath
+    pathToSerializedModel = None
+    testTextPath = None
 
     for argument in sys.argv:
         nextArgument = None

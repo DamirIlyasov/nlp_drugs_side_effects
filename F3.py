@@ -3,7 +3,10 @@ import sys
 from algs.TextClassifier import predict
 
 if __name__ == '__main__':
-    global pathToSerializedModel, textPath, pathToSave
+    pathToSerializedModel = None
+    textPath = None
+    pathToSave = None
+
     for argument in sys.argv:
         nextArgument = None
         if sys.argv.index(argument) < (len(sys.argv) - 1):
