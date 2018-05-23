@@ -223,7 +223,6 @@ def stemVocab(input, language):
     result = []
     for line in vocab:
         result.append(listToString(__getPreProcessedWordsFromDocument(line, language)))
-    print(result)
     return result
 
 

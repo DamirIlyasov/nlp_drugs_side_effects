@@ -68,3 +68,6 @@ def train_and_save_model(train_file, text_encoding, word_type, n_gram_range, fea
     print('Saving trained model..')
     pickle.dump(svm_w2v_tfidf, open(trained_model_file, 'wb'))
     print('Model is saved!')
+
+
+train_and_save_model('loaded_tweets_parsed.txt', None, None, 1, True, False, None, 'trained_model.sav', 'english')
