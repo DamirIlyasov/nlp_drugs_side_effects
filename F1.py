@@ -42,5 +42,31 @@ for argument in sys.argv:
 
     if argument == '-o':
         # путь-куда-сохранить-сериализованную-языковую-модель, обязательный аргумент
-        pathToSerializedModel = nextArgument
-        print('pathToSerializedModel:', pathToSerializedModel)
+        pathToSaveSerializedModel = nextArgument
+        print('pathToSaveSerializedModel:', pathToSaveSerializedModel)
+
+    if argument == '--lm':
+        # путь-к-сериализованной-модели
+        serializedModelPath = nextArgument
+        print('serializedModelPath:', serializedModelPath)
+
+    if argument == "--src-test-texts":
+        # путь-к-тестовой-коллекции
+        testTextPath = nextArgument
+        print('testTextPath:', testTextPath)
+
+    if argument == '--src-texts':
+        # путь-к-коллекции
+        textPath = nextArgument
+        print('textPath:', textPath)
+
+    if argument == '--o-texts':
+        # путь-куда-сохранить-размеченную-коллекцию
+        pathToSaveCollection = nextArgument
+        print('pathToSaveCollection:', pathToSaveCollection)
+
+
+def work(pathToCorpus, textEncoding, wordType, grammar,
+         features, unknownWordFrequencym, pathToSaveSerializedModel,
+         serializedModelPath, testTextPath, textPath, PathToSaveCollection):
+    #main logic
