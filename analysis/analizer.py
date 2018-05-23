@@ -218,6 +218,15 @@ def getNGrammVocabulary(documents, type, language, ngramm):
     return list(result.keys())
 
 
+def stemVocab(input, language):
+    vocab = splitCorpus(input)
+    result = []
+    for line in vocab:
+        result.append(listToString(__getPreProcessedWordsFromDocument(line, language)))
+    print(result)
+    return result
+
+
 # функции  для обслуживания параметра функции --word-type
 """""
     surface_all
@@ -396,3 +405,5 @@ def splitCorpus(input):
 
 
 # getNGrammVocabulary(splitCorpus('test/loaded_tweets_parsed.txt'), 'stem', 'english', 2)
+
+# stemVocab('test/loaded_tweets_parsed.txt', "english")
