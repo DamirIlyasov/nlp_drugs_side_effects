@@ -154,6 +154,18 @@ def getEntranceMatrixCountVectorizer(input, dictionary, language='english', outp
     return csr_matrix(result)
 
 
+def getStatisticFromEntranceMatrix(input):
+    totalLines = 0
+    linesWithADR = 0
+    with open(input, 'r', encoding='utf-8') as infile:
+        for line in infile:
+            if line.__contains__('1'):
+                linesWithADR = linesWithADR + 1
+            totalLines = totalLines + 1
+    result = linesWithADR / totalLines
+    print("процент покрытия : " + str(result))
+
+
 """""
     Функция парсит данный корпус, стеммит каждое слово и убирает слова
 
@@ -180,6 +192,26 @@ def parseDocument(input, language='english', output=''):
 
 
 # Служебные функции
+
+
+def __divideMarkedCorpus(input, output1, output2):
+    firstDocs = []
+    secondDocs = []
+    with open(input, 'r', encoding='utf-8') as infile:
+        for line in infile:
+            if nltk.word_tokenize(line)[0] == '0':
+                firstDocs.append(line)
+            if nltk.word_tokenize(line)[0] == '1':
+                secondDocs.append(line)
+    __writeArrayToFile('test/1_class_tweets.txt', firstDocs)
+    __writeArrayToFile('test/2_class_tweets.txt', secondDocs)
+
+
+def __writeArrayToFile(output, arrayData):
+    with open(output, 'w', encoding='utf-8') as outfile:
+            for value in arrayData:
+                outfile.write(str(value))
+            outfile.write("\n")
 
 
 def __getStemmer(language):
@@ -258,10 +290,13 @@ def __addRow(array, amount=1):
 
 # Тестовые запуски
 
-#
-# getEntranceMatrixCountVectorizer("test/loaded_tweets_parsed.txt", "dictionaries/ADR_dictionary_en.txt",
-#                                  output="test/entrance_matrix.txt",
-#                                  language='english')
+
+print("процент покрытия из класаа 0 : ")
+getStatisticFromEntranceMatrix("test/entrance_mat_1.txt")
+
+print("процент покрытия из класаа 1 : ")
+getStatisticFromEntranceMatrix("test/entrance_mat_2.txt")
+
 # parseDocument("test/loaded_tweets_parsed.txt", output="test/entrance_matrix.txt")
 # getEntranceMatrix("test/loaded_tweets_parsed.txt", "dictionaries/ADR_dictionary_en.txt", "english", "test/entrance_matrix.txt")
 # print(getEntranceMatrix("1", "2"))
