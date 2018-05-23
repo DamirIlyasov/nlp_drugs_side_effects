@@ -8,6 +8,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.svm import LinearSVC
 
+from algs.FeatureUnionBuilder import FeatureUnionBuilder, getFeatureUnion
 from algs.Util import text_process
 
 """Trains model with given parameters and saves it"""
@@ -44,16 +45,19 @@ def train_and_save_model(train_file, text_encoding, word_type, n_gram_range, fea
 
     x_train_new, x_test, y_train_new, y_test = train_test_split(x_train, y_train, test_size=0.2, random_state=101)
 
+    feature_union_builder = FeatureUnionBuilder(language, n_gram_range, word_type)
+    tfidf_vectorizer = feature_union_builder.getTfidfVectorizer()
+    feature_union = getFeatureUnion(tfidf_vectorizer)
+    if features:
+        word2vec_model = feature_union_builder.getWord2VecModel(model,100)
+        vocab_model = feature_union_builder.getVocabModel(os.path.join(os.path.dirname(__file__), '..', 'data', 'SideEffectsEng.txt'))
+        feature_union = getFeatureUnion(tfidf_vectorizer, vocab_model, word2vec_model)
     if not laplace:
-        svm_w2v_tfidf = Pipeline([('feats', FeatureUnion([
-            ('tf_idf_vect', TfidfVectorizer(analyzer=text_process, min_df=unknown_word_freq)),
-        ])),
+        svm_w2v_tfidf = Pipeline([('feats', feature_union),
                                   ("linear svc", LinearSVC())
                                   ])
     else:
-        svm_w2v_tfidf = Pipeline([('feats', FeatureUnion([
-            ('tf_idf_vect', TfidfVectorizer(analyzer=text_process)),
-        ])),
+        svm_w2v_tfidf = Pipeline([('feats', feature_union),
                                   ("multinomialNB", MultinomialNB())
                                   ])
 
