@@ -7,6 +7,11 @@ import scipy.sparse as sps
 import time
 from sklearn.feature_extraction.text import CountVectorizer
 
+
+punctuation = {'.', ',', '"', "'", '?', '!', ':', ';', '(', ')', '[', ']', '{', '}', '%', '$', '#', '№', '*', '^', '@',
+               '+', '-', '\'s', '\'m', '\'', '...', '\"'}
+
+
 """""
     Функция для анализа корпуса
     
@@ -191,6 +196,39 @@ def parseDocument(input, language='english', output=''):
     return documents
 
 
+# функции  для обслуживания параметра функции --word-type
+"""""
+    surface_all
+    В качестве слов берутся все токены как есть
+"""
+
+
+def surfaceAll(document):
+    return [word.lower() for word in nltk.word_tokenize(document)]
+
+
+"""""
+    surface_no_pm
+    Все токены, кроме знаков пунктуаций
+"""
+
+
+def surfaceNoPm(document):
+    return [word.lower() for word in nltk.word_tokenize(document)
+            if not punctuation.__contains__(word)]
+    pass
+
+
+"""""
+    stem
+    каждый токен подвергается стемму
+"""
+
+
+def stem(document, language):
+    return __getPreProcessedWordsFromDocument(document, language)
+
+
 # Служебные функции
 
 
@@ -229,8 +267,7 @@ def __getStopWords(language):
     if not language in options:
         raise ValueError('unknown language')
     stop = options.get(language)
-    stop.update(['.', ',', '"', "'", '?', '!', ':', ';', '(', ')', '[', ']', '{', '}'
-                    , '%', '$', '#', '№', '*', '^', '@', '+', '-', '\'s', '\'m', '\'', '...', '\"'])
+    stop.update(punctuation)
     return stop
 
 
