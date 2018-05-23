@@ -21,16 +21,17 @@ def getFeatureUnion(tfidf_vectorizer, vocab_model, word2vec_model):
 
 
 class FeatureUnionBuilder:
-    def __init__(self, language, ngramm, word_type):
+    def __init__(self, language, ngramm, word_type, unknown_word_freq):
         self.language = language
         self.ngramm = ngramm
         self.wordType = word_type
+        self.minDf = unknown_word_freq
 
     def getTfidfVectorizer(self):
-        return TfidfVectorizer(analyzer=self.text_analyzer)
+        return TfidfVectorizer(analyzer=self.text_analyzer, min_df=self.minDf)
 
     def getVocabModel(self, vocab_path):
-        return CountVectorizer(vocabulary=stemVocab(vocab_path, self.language))
+        return CountVectorizer(vocabulary=stemVocab(vocab_path, self.language), min_df=self.minDf)
 
     def getWord2VecModel(self, model, size):
         return AvgFeatureVec(model, size)
