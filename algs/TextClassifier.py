@@ -21,3 +21,5 @@ def predict(trained_model_path, test_text_path, result_path):
               encoding='utf-8')
     print("\n".join('%s' % x for x in list(zip(y_pred, x_test))), file=f1)
 
+
+predict("trained_model.sav", "")

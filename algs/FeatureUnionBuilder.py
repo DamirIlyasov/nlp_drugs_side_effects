@@ -34,7 +34,9 @@ class FeatureUnionBuilder:
         return CountVectorizer(vocabulary=set(stemVocab(vocab_path, self.language)), min_df=self.minDf)
 
     def getWord2VecModel(self, model, size):
-        return AvgFeatureVec(model, size)
+        avg_feature_vec = AvgFeatureVec(model, size)
+        avg_feature_vec.setLanguage(self.language)
+        return avg_feature_vec
 
     def text_analyzer(self, text):
         return getNGrammVocabulary(text, self.wordType, self.language, self.ngramm)
