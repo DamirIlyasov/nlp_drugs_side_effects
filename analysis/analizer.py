@@ -6,6 +6,8 @@ from scipy.sparse import *
 import scipy.sparse as sps
 import time
 from sklearn.feature_extraction.text import CountVectorizer
+import os
+import re
 
 punctuation = {'.', ',', '"', "'", '?', '!', ':', ';', '(', ')', '[', ']', '{', '}', '%', '$', '#', '№', '*', '^', '@',
                '+', '-', '\'s', '\'m', '\'', '...', '\"'}
@@ -280,6 +282,18 @@ def listToString(list):
     for word in list:
         string = string + " " + word
     return string
+
+
+def parseRussian(input, output):
+    with open(input, 'r', encoding='utf-8') as infile, open(output, 'w', encoding='utf-8') as outfile:
+        for line in infile:
+            line = re.sub('_[A-Z]*', '', line)
+            outfile.write(line)
+
+
+parseRussian(os.path.join(os.path.dirname(__file__), '..', 'sources', 'ruwikiruscorpora_upos_skipgram_300_2_2018.vec'),
+             os.path.join(os.path.dirname(__file__), '..', 'sources',
+                          'ruwikiruscorpora_upos_skipgram_300_2_2018_parsed_vec.vec'))
 
 
 def __divideMarkedCorpus(input, output1, output2):

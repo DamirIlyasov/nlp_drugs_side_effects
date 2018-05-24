@@ -1,11 +1,13 @@
 import os
 import pickle
 
-from gensim.models import Word2Vec
+from gensim.models import Word2Vec, KeyedVectors
 from sklearn.cross_validation import train_test_split
+from sklearn.externals import joblib
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
+from gensim.models.wrappers.fasttext import FastText
 
 from algs.FeatureUnionBuilder import FeatureUnionBuilder, getFeatureUnion
 
@@ -45,10 +47,12 @@ def train_and_save_model(train_file, text_encoding, word_type, n_gram_range, fea
 
     if features:
         print("Loading w2v")
-        model = Word2Vec.load(os.path.join(os.path.dirname(__file__), '..', 'sources', 'model_w2v.txt'))
-        word2vec_model = feature_union_builder.getWord2VecModel(model, 100)
+        # model = Word2Vec.load(os.path.join(os.path.dirname(__file__), '..', 'sources', 'wikipedia-pubmed-and-PMC-w2v'))
+        # model = KeyedVectors.load_word2vec_format(os.path.join(os.path.dirname(__file__), '..', 'sources', 'wikipedia-pubmed-and-PMC-w2v.bin'), binary=True)
+        model = KeyedVectors.load_word2vec_format(os.path.join(os.path.dirname(__file__), '..', 'sources', 'ruwikiruscorpora_upos_skipgram_300_2_2018_parsed_vec.vec'))
+        word2vec_model = feature_union_builder.getWord2VecModel(model, 300)
         vocab_model = feature_union_builder.getVocabModel(
-            os.path.join(os.path.dirname(__file__), '..', 'data', 'SideEffectsEng.txt'))
+            os.path.join(os.path.dirname(__file__), '..', 'data', 'SideEffectsRus.txt'))
         feature_union = getFeatureUnion(tfidf_vectorizer, vocab_model, word2vec_model)
     else:
         feature_union = getFeatureUnion(tfidf_vectorizer)
@@ -66,8 +70,8 @@ def train_and_save_model(train_file, text_encoding, word_type, n_gram_range, fea
     svm_w2v_tfidf.fit(x_train_new, y_train_new)
 
     print('Saving trained model..')
-    pickle.dump(svm_w2v_tfidf, open(trained_model_file, 'wb'))
+    joblib.dump(svm_w2v_tfidf, open(trained_model_file, 'wb'), compress=3, protocol=2)
     print('Model is saved!')
 
 
-train_and_save_model('loaded_tweets_parsed.txt', None, None, 1, True, False, None, 'trained_model.sav', 'english')
+train_and_save_model('tweets_parsed_rus.txt', None, None, 1, True, False, None, 'trained_model_rus.sav', 'russian')

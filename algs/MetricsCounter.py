@@ -2,6 +2,7 @@ import os
 import pickle
 
 from sklearn.cross_validation import train_test_split
+from sklearn.externals import joblib
 from sklearn.metrics import classification_report
 
 """Gets classified test corpus and makes report with metrics"""
@@ -9,7 +10,7 @@ from sklearn.metrics import classification_report
 
 def count_metrics(trained_model_path, test_file):
     print("Loading trained model...")
-    predicting_model = pickle.load(open(trained_model_path, 'rb'))
+    predicting_model = joblib.load(open(trained_model_path, 'rb'))
 
     x_train = []
     y_train = []
@@ -29,4 +30,4 @@ def count_metrics(trained_model_path, test_file):
     print(classification_report(y_test, y_pred), file=f2)
 
 
-count_metrics('trained_model.sav', 'loaded_tweets_parsed.txt')
+count_metrics('trained_model_rus.sav', 'tweets_parsed_rus.txt')
