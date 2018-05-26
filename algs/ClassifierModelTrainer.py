@@ -9,7 +9,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 from gensim.models.wrappers.fasttext import FastText
 
-from algs.FeatureUnionBuilder import FeatureUnionBuilder, getFeatureUnion
+from algs.FeatureUnionBuilder import FeatureUnionBuilder, getFeatureUnion , getFeatureUnionWithVocab
 
 """Trains model with given parameters and saves it"""
 
@@ -40,8 +40,6 @@ def train_and_save_model(train_file, text_encoding, word_type, n_gram_range, fea
         x_train.append(fields[1])
         y_train.append(fields[0])
 
-    x_train_new, x_test, y_train_new, y_test = train_test_split(x_train, y_train, test_size=0.2, random_state=101)
-
     feature_union_builder = FeatureUnionBuilder(language, n_gram_range, word_type, unknown_word_freq)
     tfidf_vectorizer = feature_union_builder.getTfidfVectorizer()
 
@@ -55,7 +53,9 @@ def train_and_save_model(train_file, text_encoding, word_type, n_gram_range, fea
             os.path.join(os.path.dirname(__file__), '..', 'data', 'SideEffectsRus.txt'))
         feature_union = getFeatureUnion(tfidf_vectorizer, vocab_model, word2vec_model)
     else:
-        feature_union = getFeatureUnion(tfidf_vectorizer)
+        vocab_model = feature_union_builder.getVocabModel(
+            os.path.join(os.path.dirname(__file__), '..', 'data', 'SideEffectsRus.txt'))
+        feature_union = getFeatureUnionWithVocab(tfidf_vectorizer, vocab_model)
 
     if not laplace:
         svm_w2v_tfidf = Pipeline([('feats', feature_union),
@@ -67,11 +67,11 @@ def train_and_save_model(train_file, text_encoding, word_type, n_gram_range, fea
                                   ])
 
     print("Training SVM..")
-    svm_w2v_tfidf.fit(x_train_new, y_train_new)
+    svm_w2v_tfidf.fit(x_train, y_train)
 
     print('Saving trained model..')
     joblib.dump(svm_w2v_tfidf, open(trained_model_file, 'wb'), compress=3, protocol=2)
     print('Model is saved!')
 
 
-train_and_save_model('tweets_parsed_rus.txt', None, None, 1, True, False, None, 'trained_model_rus.sav', 'russian')
+train_and_save_model('tweets_set_learn.txt', None, None, 1, False, False, None, 'trained_model_rus_with_vocab.sav', 'russian')

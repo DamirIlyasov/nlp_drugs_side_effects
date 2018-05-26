@@ -13,7 +13,7 @@ punctuation = {'.', ',', '"', "'", '?', '!', ':', ';', '(', ')', '[', ']', '{', 
                '+', '-', '\'s', '\'m', '\'', '...', '\"'}
 
 """""
-    Функция для анализа корпуса
+    Функция анализа корпуса 
     
     Parameters
     ----------
@@ -291,9 +291,9 @@ def parseRussian(input, output):
             outfile.write(line)
 
 
-parseRussian(os.path.join(os.path.dirname(__file__), '..', 'sources', 'ruwikiruscorpora_upos_skipgram_300_2_2018.vec'),
-             os.path.join(os.path.dirname(__file__), '..', 'sources',
-                          'ruwikiruscorpora_upos_skipgram_300_2_2018_parsed_vec.vec'))
+# parseRussian(os.path.join(os.path.dirname(__file__), '..', 'sources', 'ruwikiruscorpora_upos_skipgram_300_2_2018.vec'),
+#              os.path.join(os.path.dirname(__file__), '..', 'sources',
+#                           'ruwikiruscorpora_upos_skipgram_300_2_2018_parsed_vec.vec'))
 
 
 def __divideMarkedCorpus(input, output1, output2):
@@ -396,6 +396,14 @@ def splitCorpus(input):
             documents.append(line)
     return documents
 
+
+def deleteSame(input, output):
+    inDocs = splitCorpus(input)
+    __writeArrayToFile(output, set(inDocs))
+
+#
+# deleteSame('tweets_parsed_rus.txt', 'tweets_parsed_rus_set.txt')
+
 # Тестовые запуски
 
 
@@ -411,6 +419,8 @@ def splitCorpus(input):
 # print(analyze("english", "test/loaded_tweets_parsed.txt"))
 
 
-# getNGrammVocabulary(splitCorpus('test/loaded_tweets_parsed.txt'), 'stem', 'english', 2)
+# getNGrammVocabulary('Gonna ask to return to Lexapro bc Cymbalta not workin, also bc busking profits plummeted when I could no longer play crotch like steel drum', 'stem', 'english', 2)
 
 # stemVocab('test/loaded_tweets_parsed.txt', "english")
+
+# print(analyze(language='english', input='test/loaded_tweets_parsed.txt'))
