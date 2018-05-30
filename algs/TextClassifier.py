@@ -21,7 +21,8 @@ def predict(trained_model_path, test_text_path, result_path):
     print("Printing results")
     f1 = open(os.path.join(os.path.dirname(__file__), '..', 'results', result_path), 'w+',
               encoding='utf-8')
-    print("\n".join('%s' % x for x in list(zip(y_pred, x_test))), file=f1)
+    mylist = list(zip(y_pred, x_test))
+    print('\n'.join([str(line) for line in mylist]), file=f1)
 
 
-predict("trained_model.sav", "json_parsed_small.txt", "result_predicted")
+predict("rus_1.sav", "rus.txt", "result_predicted")

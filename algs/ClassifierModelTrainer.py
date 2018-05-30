@@ -77,4 +77,4 @@ def train_and_save_model(train_file, text_encoding, word_type, n_gram_range, fea
     print('Model is saved!')
 
 
-train_and_save_model('rus_classified_4_6\\1\\train.txt', None, None, 1, True, False, None, 'rus_1_dict.sav', 'russian')
+train_and_save_model('rus_classified_4_6/1/train.txt', None, None, 1, False, False, None, 'rus_1.sav', 'russian')

@@ -27,4 +27,4 @@ def count_metrics(trained_model_path, test_file):
     print(classification_report(y_test, y_pred), file=f2)
 
 
-count_metrics('rus_1_dict.sav', 'rus_classified_4_6\\1\\test.txt')
+count_metrics('rus_5.sav', 'rus_classified_4_6\\5\\test.txt')
