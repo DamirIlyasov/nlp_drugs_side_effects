@@ -401,6 +401,9 @@ def deleteSame(input, output):
     inDocs = splitCorpus(input)
     __writeArrayToFile(output, set(inDocs))
 
+
+print(nltk.word_tokenize("I am Good BoY"))
+
 #
 # deleteSame('tweets_parsed_rus.txt', 'tweets_parsed_rus_set.txt')
 
