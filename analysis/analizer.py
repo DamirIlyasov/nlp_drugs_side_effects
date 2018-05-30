@@ -402,7 +402,6 @@ def deleteSame(input, output):
     __writeArrayToFile(output, set(inDocs))
 
 
-print(nltk.word_tokenize("I am Good BoY"))
 
 #
 # deleteSame('tweets_parsed_rus.txt', 'tweets_parsed_rus_set.txt')

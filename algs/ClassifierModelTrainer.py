@@ -9,7 +9,9 @@ from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 from gensim.models.wrappers.fasttext import FastText
 
-from algs.FeatureUnionBuilder import FeatureUnionBuilder, getFeatureUnion
+from algs.FeatureUnionBuilder import FeatureUnionBuilder, getFeatureUnion, getFeatureUnionWithVocab
+from algs.VocabModel import VocabModel
+from analysis.analizer import stemVocab
 
 """Trains model with given parameters and saves it"""
 
@@ -34,7 +36,7 @@ def train_and_save_model(train_file, text_encoding, word_type, n_gram_range, fea
     y_train = []
 
     print("Parsing data")
-    for line in open(train_file,
+    for line in open(os.path.join(os.path.dirname(__file__), '..', 'sources', train_file),
                      encoding=text_encoding):
         fields = line.rstrip().split('\t')
         x_train.append(fields[1])
@@ -46,12 +48,15 @@ def train_and_save_model(train_file, text_encoding, word_type, n_gram_range, fea
     if features:
         print("Loading w2v")
         # model = Word2Vec.load(os.path.join(os.path.dirname(__file__), '..', 'sources', 'word2vec_eng_big'))
-        model = KeyedVectors.load_word2vec_format(os.path.join(os.path.dirname(__file__), '..', 'sources', 'wikipedia-pubmed-and-PMC-w2v.bin'), binary=True)
+        # model = KeyedVectors.load_word2vec_format(os.path.join(os.path.dirname(__file__), '..', 'sources', 'wikipedia-pubmed-and-PMC-w2v.bin'), binary=True)
         # model = KeyedVectors.load_word2vec_format(os.path.join(os.path.dirname(__file__), '..', 'sources', 'ruwikiruscorpora_upos_skipgram_300_2_2018_parsed_vec.vec'))
-        word2vec_model = feature_union_builder.getWord2VecModel(model, 200)
-        vocab_model = feature_union_builder.getVocabModel(
-            os.path.join(os.path.dirname(__file__), '..', 'data', 'EngFromADR.txt'))
-        feature_union = getFeatureUnion(tfidf_vectorizer, vocab_model, word2vec_model)
+        # word2vec_model = feature_union_builder.getWord2VecModel(model, 200)
+        # vocab_model = feature_union_builder.getVocabModel(
+        #     os.path.join(os.path.dirname(__file__), '..', 'data', 'EngFromADR.txt'))
+        # feature_union = getFeatureUnion(tfidf_vectorizer, vocab_model, word2vec_model)
+
+        feature_union = getFeatureUnionWithVocab(tfidf_vectorizer, VocabModel(stemVocab(
+                os.path.join(os.path.dirname(__file__), '..', 'data', 'SideEffectsRus.txt'), 'english')))
     else:
         feature_union = getFeatureUnion(tfidf_vectorizer)
 
@@ -72,4 +77,4 @@ def train_and_save_model(train_file, text_encoding, word_type, n_gram_range, fea
     print('Model is saved!')
 
 
-train_and_save_model('C:\\Users\Dmitry\PycharmProjects\\nlp_drugs_side_effects\sources\\eng_data\\5\\5_train.txt', None, None, 1, True, False, None, 'trained_model.sav', 'english')
+train_and_save_model('rus_classified_4_6\\1\\train.txt', None, None, 1, True, False, None, 'rus_1_dict.sav', 'russian')

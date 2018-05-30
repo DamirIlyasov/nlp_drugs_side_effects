@@ -5,16 +5,16 @@ from algs.AvgFeatureVec import AvgFeatureVec
 from analysis.analizer import getNGrammVocabulary, stemVocab
 
 
-# def getFeatureUnion(tfidf_vectorizer, vocab_model):
-#     return FeatureUnion([("tfidf_vectorizer", tfidf_vectorizer),
-#                          ("vocab", vocab_model)])
+def getFeatureUnionWithVocab(tfidf_vectorizer, vocab_model):
+    return FeatureUnion([("tfidf_vectorizer", tfidf_vectorizer),
+                         ("vocab", vocab_model)])
 
 
-# def getFeatureUnion(tfidf_vectorizer):
-#     return FeatureUnion([("tfidf_vectorizer", tfidf_vectorizer)])
+def getFeatureUnion(tfidf_vectorizer):
+    return FeatureUnion([("tfidf_vectorizer", tfidf_vectorizer)])
 
 
-def getFeatureUnion(tfidf_vectorizer, vocab_model, word2vec_model):
+def getFeatureUnionWithW2V(tfidf_vectorizer, vocab_model, word2vec_model):
     return FeatureUnion([("tfidf_vectorizer", tfidf_vectorizer),
                          ("vocab", vocab_model),
                          ("word2vec", word2vec_model)])
