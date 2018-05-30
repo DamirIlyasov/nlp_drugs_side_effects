@@ -221,7 +221,7 @@ def stemVocab(input, language):
     vocab = splitCorpus(input)
     result = []
     for line in vocab:
-        result.append(listToString(__getPreProcessedWordsFromDocument(line, language)))
+        result.append(line.rstrip())
     return result
 
 
