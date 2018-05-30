@@ -2,7 +2,7 @@ import nltk
 import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 
-from analysis.analizer import getNGrammVocabulary
+from analysis.analizer import surfaceNoPm
 
 
 class AvgFeatureVec(BaseEstimator, TransformerMixin):
@@ -25,7 +25,7 @@ class AvgFeatureVec(BaseEstimator, TransformerMixin):
         features = []
         for text in X:
             features.append(
-                self.makeFeatureVec(getNGrammVocabulary(text, 'stem', self.language, 1),
+                self.makeFeatureVec(surfaceNoPm(text),
                                     self.model,
                                     self.num_features))
         return features

@@ -291,9 +291,9 @@ def parseRussian(input, output):
             outfile.write(line)
 
 
-parseRussian(os.path.join(os.path.dirname(__file__), '..', 'sources', 'ruwikiruscorpora_upos_skipgram_300_2_2018.vec'),
-             os.path.join(os.path.dirname(__file__), '..', 'sources',
-                          'ruwikiruscorpora_upos_skipgram_300_2_2018_parsed_vec.vec'))
+# parseRussian(os.path.join(os.path.dirname(__file__), '..', 'sources', 'ruwikiruscorpora_upos_skipgram_300_2_2018.vec'),
+#              os.path.join(os.path.dirname(__file__), '..', 'sources',
+#                           'ruwikiruscorpora_upos_skipgram_300_2_2018_parsed_vec.vec'))
 
 
 def __divideMarkedCorpus(input, output1, output2):
@@ -406,7 +406,7 @@ def splitCorpus(input):
 # getStatisticFromEntranceMatrix("test/entrance_mat_2.txt")
 
 # parseDocument("test/loaded_tweets_parsed.txt", output="test/entrance_matrix.txt")
-# getEntranceMatrix("test/loaded_tweets_parsed.txt", "dictionaries/ADR_dictionary_en.txt", "english", "test/entrance_matrix.txt")
+# getEntranceMatrix(os.path.join(os.path.dirname(__file__), '..', 'sources', 'loaded_tweets_parsed.txt'), "analysis/dictionaries/ADR_dictionary_en.txt", "english", "test/entrance_matrix.txt")
 # print(getEntranceMatrix("1", "2"))
 # print(analyze("english", "test/loaded_tweets_parsed.txt"))
 

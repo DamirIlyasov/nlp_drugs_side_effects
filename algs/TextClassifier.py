@@ -2,10 +2,12 @@
 import os
 import pickle
 
+from sklearn.externals import joblib
+
 
 def predict(trained_model_path, test_text_path, result_path):
     print("Loading trained model...")
-    predicting_model = pickle.load(open(trained_model_path, 'rb'))
+    predicting_model = joblib.load(open(trained_model_path, 'rb'))
     x_test = []
 
     print("Parsing data")
@@ -22,4 +24,4 @@ def predict(trained_model_path, test_text_path, result_path):
     print("\n".join('%s' % x for x in list(zip(y_pred, x_test))), file=f1)
 
 
-predict("trained_model.sav", "")
+predict("trained_model.sav", "json_parsed_small.txt", "result_predicted")
